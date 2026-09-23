@@ -1,0 +1,62 @@
+{
+    "erreur": false,
+    "message": "Connexion avec succès",
+    "Evenements": [
+        {
+            "id_evenement": 1,
+            "titre": "ev1",
+            "description": "<p>Ac ne quis a nobis hoc ita dici forte miretur, quod alia quaedam in \r\nhoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos\r\n quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes \r\nartes, quae ad humanitatem pertinent, habent quoddam commune vinculum, \r\net quasi cognatione quadam inter se continentur.</p><p><br></p>",
+            "debut": "2020-08-26 00:00:00+00",
+            "fin": "2020-08-27 00:00:00+00",
+            "id_personne": 64,
+            "lastupdate": "2020-09-01 13:21:24",
+            "Piecesjointes": [
+                {
+                    "id_communication_piece_jointe": 2,
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_pieces_jointes/Communication_1/Piece_jointe_2.png",
+                    "id_evenement": 1
+                },
+                {
+                    "id_communication_piece_jointe": 1,
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_pieces_jointes/Communication_1/Piece_jointe_1.png",
+                    "id_evenement": 1
+                },
+                {
+                    "id_communication_piece_jointe": 3,
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_pieces_jointes/Communication_1/Piece_jointe_3.png",
+                    "id_evenement": 1
+                }
+            ],
+            "Albumphotos": [
+                {
+                    "id_communication_photo": 1,
+                    "photo_description": "1",
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_photo/Communication_1/Photo_1.png",
+                    "position": 1,
+                    "id_evenement": 1
+                },
+                {
+                    "id_communication_photo": 2,
+                    "photo_description": "2",
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_photo/Communication_1/Photo_2.png",
+                    "position": 2,
+                    "id_evenement": 1
+                },
+                {
+                    "id_communication_photo": 3,
+                    "photo_description": "3",
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_photo/Communication_1/Photo_3.png",
+                    "position": 3,
+                    "id_evenement": 1
+                },
+                {
+                    "id_communication_photo": 4,
+                    "photo_description": "",
+                    "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_photo/Communication_1/Photo_4.png",
+                    "position": 4,
+                    "id_evenement": 1
+                }
+            ]
+        }
+    ]
+}

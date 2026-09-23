@@ -1,0 +1,20 @@
+{
+    "erreur": false,
+    "message": "Connexion avec succès",
+    "Information": {
+        "id_information": 2,
+        "titre": "Information by id",
+        "description": "<p>Verum ad istam omnem orationem brevis est defensio. Nam quoad aetas \r\nM. Caeli dare potuit isti suspicioni locum, fuit primum ipsius pudore, \r\ndeinde etiam patris diligentia disciplinaque munita. Qui ut huic virilem\r\n togam deditšnihil dicam hoc loco de me; tantum sit, quantum vos \r\nexistimatis; hoc dicam, hunc a patre continuo ad me esse deductum; nemo \r\nhunc M. Caelium in illo aetatis flore vidit nisi aut cum patre aut mecum\r\n aut in M. Crassi castissima domo, cum artibus honestissimis erudiretur.\r\n</p><div class=\"Texte\" id=\"TheTexte\" lang=\"zxx\"><p>Superatis Tauri montis verticibus qui ad solis ortum sublimius \r\nattolluntur, Cilicia spatiis porrigitur late distentis dives bonis \r\nomnibus terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi \r\npalmite viget et frugibus minutis, quam mediam navigabile flumen \r\nCalycadnus interscindit.</p>\r\n<p>Eodem tempore etiam Hymetii praeclarae indolis viri negotium est \r\nactitatum, cuius hunc novimus esse textum. cum Africam pro consule \r\nregeret Carthaginiensibus victus inopia iam lassatis, ex horreis Romano \r\npopulo destinatis frumentum dedit, pauloque postea cum provenisset \r\nsegetum copia, integre sine ulla restituit mora.</p>\r\n</div><p><br></p>",
+        "debut": "2020-09-01 00:00:00+00",
+        "fin": "2020-09-08 00:00:00+00",
+        "id_personne": 64,
+        "lastupdate": "2020-09-04 10:09:24",
+        "Piecesjointes": [
+            {
+                "id_communication_piece_jointe": 4,
+                "lien_piece_jointe": "http://localhost:82/Inoser/Inoface/public/storage/Communication_pieces_jointes/Communication_1/Piece_jointe_4.jpg",
+                "id_information": 1
+            }
+        ]
+    }
+}

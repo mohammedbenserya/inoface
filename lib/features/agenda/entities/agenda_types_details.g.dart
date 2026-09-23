@@ -1,0 +1,12 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'agenda_types_details.dart';
+
+// **************************************************************************
+// DaoGenerator
+// **************************************************************************
+
+mixin _$AgendaTypesDetailsDaoMixin on DatabaseAccessor<AppDatabase> {
+  $AgendaTypesDetailsTable get agendaTypesDetails =>
+      attachedDatabase.agendaTypesDetails;
+}

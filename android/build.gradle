@@ -1,0 +1,91 @@
+import groovy.xml.XmlParser
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+subprojects { project ->
+    project.pluginManager.withPlugin("com.android.library") {
+        def androidExt = project.extensions.findByName("android")
+        if (androidExt != null && androidExt.namespace == null) {
+            def manifestFile = project.file("src/main/AndroidManifest.xml")
+            if (manifestFile.exists()) {
+                def packageName = new XmlParser().parse(manifestFile).attribute("package")
+                if (packageName != null) {
+                    androidExt.namespace = packageName
+                }
+            }
+        }
+    }
+    project.afterEvaluate {
+        def androidExt = project.extensions.findByName("android")
+        if (androidExt == null) {
+            return
+        }
+        if (androidExt.namespace == null) {
+            def manifestFile = project.file("src/main/AndroidManifest.xml")
+            if (manifestFile.exists()) {
+                def packageName = new XmlParser().parse(manifestFile).attribute("package")
+                if (packageName != null) {
+                    androidExt.namespace = packageName
+                }
+            }
+        }
+        androidExt.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+        androidExt.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+        try {
+            androidExt.compileSdk = 36
+        } catch (ignored) {
+        }
+        try {
+            androidExt.kotlinOptions.jvmTarget = "17"
+        } catch (ignored) {
+        }
+        if (project.name == "app") {
+            androidExt.ndkVersion = "30.0.16248370"
+        }
+    }
+    project.tasks.withType(JavaCompile).configureEach { task ->
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+        options.deprecation = false
+        options.warnings = false
+        // Plugins such as sqflite add -Xlint:deprecation/unchecked in projectsEvaluated.
+        // Strip those at execution time so javac does not print Note: lines.
+        task.doFirst {
+            options.compilerArgs.removeAll { arg ->
+                def value = arg.toString()
+                value.startsWith('-Xlint:') && value != '-Xlint:none'
+            }
+            if (!options.compilerArgs.contains('-Xlint:none')) {
+                options.compilerArgs.add('-Xlint:none')
+            }
+            if (!options.compilerArgs.contains('-nowarn')) {
+                options.compilerArgs.add('-nowarn')
+            }
+        }
+    }
+    project.tasks.matching { it.name.toLowerCase().contains('kotlin') }.configureEach { task ->
+        try {
+            task.compilerOptions.suppressWarnings.set(true)
+        } catch (ignored) {
+        }
+    }
+}
+
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
+}

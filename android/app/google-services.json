@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "504281605903",
+    "firebase_url": "https://inoface-new.firebaseio.com",
+    "project_id": "inoface-new",
+    "storage_bucket": "inoface-new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504281605903:android:832ff99869400f1fb5c07a",
+        "android_client_info": {
+          "package_name": "com.inoser.inoface_lescopains"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504281605903-mmb0ig3i67lrusot2p90a0o3m4lk2h67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAuTZgtghX8b4U_qUCOVjvhgBiTegj9Bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504281605903-mmb0ig3i67lrusot2p90a0o3m4lk2h67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
