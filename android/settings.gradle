@@ -48,6 +48,29 @@ gradle.beforeProject { project ->
             buildFile.write(updated, 'UTF-8')
         }
     }
+    // Play Photo/Video policy: strip READ_MEDIA_* that plugins (open_filex) inject.
+    def pluginManifest = project.file("src/main/AndroidManifest.xml")
+    if (pluginManifest.exists()) {
+        def originalManifest = pluginManifest.getText('UTF-8')
+        def updatedManifest = originalManifest
+            .replaceAll(/(?m)^[ \t]*<uses-permission[^>]*android:name="android\.permission\.READ_MEDIA_(IMAGES|VIDEO|AUDIO|VISUAL_USER_SELECTED)"[^>]*\/?>[ \t]*\r?\n?/, "")
+        if (updatedManifest != originalManifest) {
+            pluginManifest.write(updatedManifest, 'UTF-8')
+        }
+    }
+    project.fileTree(dir: project.projectDir, include: "**/*.java").each { javaFile ->
+        def originalJava = javaFile.getText('UTF-8')
+        if (!originalJava.contains("READ_MEDIA_IMAGES")) {
+            return
+        }
+        def updatedJava = originalJava
+            .replace("requestPermission(Manifest.permission.READ_MEDIA_IMAGES);", "startActivity();")
+            .replace("requestPermission(Manifest.permission.READ_MEDIA_VIDEO);", "startActivity();")
+            .replace("requestPermission(Manifest.permission.READ_MEDIA_AUDIO);", "startActivity();")
+        if (updatedJava != originalJava) {
+            javaFile.write(updatedJava, 'UTF-8')
+        }
+    }
     def aliasJcenter = { handler ->
         handler.metaClass.jcenter = { Object... args ->
             handler.mavenCentral()
