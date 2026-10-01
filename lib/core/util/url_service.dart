@@ -48,8 +48,8 @@ class UrlService {
 
   static const logout = 'logout_ws';
 
-  static String schoolJson(String codeSchool, String service) {
-    return '$inoserOrigin/$codeSchool/json/$service';
+  static String schoolJson(String? codeSchool, String service) {
+    return '$inoserOrigin/${codeSchool ?? ''}/json/$service';
   }
 
   /// Upgrade Inoser media/API URLs returned as http:// by the backend.
