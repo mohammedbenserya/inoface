@@ -38,6 +38,7 @@ class _InitialLoginState extends State<InitialLogin> with SingleTickerProviderSt
   late Animation<double> animation;
   final box = Boxes.loginInfo();
   bool _obscureText = true;
+  bool _submitting = false;
 
 
   @override
@@ -202,8 +203,9 @@ class _InitialLoginState extends State<InitialLogin> with SingleTickerProviderSt
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Text('login'.tr),
                       ),
-                      onPressed: () async {
+                      onPressed: _submitting ? null : () async {
                         if (_formKey.currentState?.validate() ?? false) {
+                          setState(() => _submitting = true);
                           await prefs.setString(
                             Keys.CODE_SCHOOL,
                             widget.codeController.text.trim(),

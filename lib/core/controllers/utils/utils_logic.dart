@@ -49,7 +49,6 @@ import 'dart:developer';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -84,88 +83,67 @@ class UtilsLogic extends GetxController {
   }
 
   void showSnack({required SnackBarType type, String? title, String? message, int seconds = 4}) {
-    switch (type) {
-      case SnackBarType.error:
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final overlayContext = Get.overlayContext ?? Get.context;
+      if (overlayContext == null || Overlay.maybeOf(overlayContext) == null) {
+        logger.w('Snackbar skipped: overlay is not ready');
+        return;
+      }
+      late final String snackTitle;
+      late final String snackMessage;
+      late final IconData icon;
+      late final Color color;
+      switch (type) {
+        case SnackBarType.error:
+          snackTitle = title ?? 'oops'.tr;
+          snackMessage = message ?? 'error_wrong'.tr;
+          icon = MdiIcons.alert;
+          color = Colors.red[300]!;
+          break;
+        case SnackBarType.unconnected:
+          snackTitle = title ?? 'oops'.tr;
+          snackMessage = 'error_connection'.tr;
+          icon = MdiIcons.wifiRemove;
+          color = Colors.red[300]!;
+          break;
+        case SnackBarType.info:
+          snackTitle = title ?? '';
+          snackMessage = message ?? '';
+          icon = MdiIcons.informationOutline;
+          color = Colors.blue[600]!;
+          break;
+        case SnackBarType.success:
+          snackTitle = title ?? 'successfully'.tr;
+          snackMessage = message ?? '';
+          icon = MdiIcons.checkboxMarkedCircleOutline;
+          color = Colors.green[300]!;
+          break;
+        case SnackBarType.warning:
+          snackTitle = title ?? 'warning'.tr;
+          snackMessage = message ?? '';
+          icon = MdiIcons.checkboxMarkedCircleOutline;
+          color = Colors.orange[300]!;
+          break;
+      }
+      try {
         Get.snackbar(
-          title ?? 'oops'.tr,
-          message ?? 'error_wrong'.tr,
-          icon: Icon(MdiIcons.alert, color: Colors.red[300]),
+          snackTitle,
+          snackMessage,
+          icon: Icon(icon, color: color),
           backgroundColor: Colors.white,
           shouldIconPulse: true,
           barBlur: 20,
           isDismissible: true,
           snackPosition: SnackPosition.BOTTOM,
-          borderColor: Colors.red[300],
+          borderColor: color,
           borderWidth: 0.5,
           margin: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
           duration: Duration(seconds: seconds),
         );
-        return;
-      case SnackBarType.unconnected:
-        Get.snackbar(
-          title ?? 'oops'.tr,
-          'error_connection'.tr,
-          icon: Icon(MdiIcons.wifiRemove, color: Colors.red[300]),
-          backgroundColor: Colors.white,
-          shouldIconPulse: true,
-          barBlur: 20,
-          isDismissible: true,
-          snackPosition: SnackPosition.BOTTOM,
-          borderColor: Colors.red[300],
-          borderWidth: 0.5,
-          margin: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-          duration: Duration(seconds: seconds),
-        );
-        return;
-      case SnackBarType.info:
-        Get.snackbar(
-          title ?? '',
-          message ?? '',
-          icon: Icon(MdiIcons.informationOutline, color: Colors.blue[600]),
-          backgroundColor: Colors.white,
-          shouldIconPulse: true,
-          barBlur: 20,
-          isDismissible: true,
-          snackPosition: SnackPosition.BOTTOM,
-          borderColor: Colors.blue[600],
-          borderWidth: 0.5,
-          margin: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-          duration: Duration(seconds: seconds),
-        );
-        return;
-      case SnackBarType.success:
-        Get.snackbar(
-          title ?? 'successfully'.tr,
-          message ?? '',
-          icon: Icon(MdiIcons.checkboxMarkedCircleOutline, color: Colors.green[300]),
-          backgroundColor: Colors.white,
-          shouldIconPulse: true,
-          barBlur: 20,
-          isDismissible: true,
-          snackPosition: SnackPosition.BOTTOM,
-          borderColor: Colors.green[300],
-          borderWidth: 0.5,
-          margin: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-          duration: Duration(seconds: seconds),
-        );
-        return;
-      case SnackBarType.warning:
-        Get.snackbar(
-          title ?? 'warning'.tr,
-          message ?? '',
-          icon: Icon(MdiIcons.checkboxMarkedCircleOutline, color: Colors.orange[300]),
-          backgroundColor: Colors.white,
-          shouldIconPulse: true,
-          barBlur: 20,
-          isDismissible: true,
-          snackPosition: SnackPosition.BOTTOM,
-          borderColor: Colors.orange[300],
-          borderWidth: 0.5,
-          margin: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-          duration: Duration(seconds: seconds),
-        );
-        return;
-    }
+      } catch (e, st) {
+        logger.e('Snackbar failed: $e', stackTrace: st);
+      }
+    });
   }
 
   bool isLocalFilePath(String path) {
@@ -1755,11 +1733,35 @@ class UtilsLogic extends GetxController {
     required String url,
     required Map<String, dynamic> body,
   }) async {
-    return await retry(() => http.post(
-      Uri.parse(url), body: body,
-    ).timeout(const Duration(seconds: 5)),
-      retryIf: (e) => e is SocketException || e is TimeoutException,
-    );
+    Future<http.Response> post(String requestUrl) {
+      return http.post(Uri.parse(requestUrl), body: body)
+          .timeout(const Duration(seconds: 20));
+    }
+
+    bool shouldRetry(Object e) =>
+        e is SocketException ||
+        e is TimeoutException ||
+        e is HandshakeException ||
+        e is http.ClientException;
+
+    try {
+      return await retry(
+        () => post(url),
+        retryIf: shouldRetry,
+        maxAttempts: 2,
+      );
+    } catch (e) {
+      final fallbackUrl = UrlService.httpFallback(url);
+      if (fallbackUrl != url) {
+        logger.w('HTTPS request failed ($e). Retrying over HTTP: $fallbackUrl');
+        return await retry(
+          () => post(fallbackUrl),
+          retryIf: shouldRetry,
+          maxAttempts: 2,
+        );
+      }
+      rethrow;
+    }
   }
 
 

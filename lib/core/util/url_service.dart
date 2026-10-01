@@ -52,19 +52,27 @@ class UrlService {
     return '$inoserOrigin/${codeSchool ?? ''}/json/$service';
   }
 
-  /// Upgrade Inoser media/API URLs returned as http:// by the backend.
-  static String rewriteInoserUri(String url) {
+  static bool isInoserHost(String? host) {
+    if (host == null || host.isEmpty) return false;
+    final value = host.toLowerCase();
+    return value == inoserHost ||
+        value.endsWith('.$inoserHost') ||
+        value == 'inoser2.cnrst.ma';
+  }
+
+  static String httpFallback(String url) {
     final uri = Uri.tryParse(url);
-    if (uri == null || uri.host.isEmpty) {
+    if (uri == null || uri.host.isEmpty || uri.scheme != 'https') {
       return url;
     }
-    final host = uri.host.toLowerCase();
-    final isInoser = host == inoserHost ||
-        host.endsWith('.$inoserHost') ||
-        host == 'inoser2.cnrst.ma';
-    if (isInoser && uri.scheme == 'http') {
-      return uri.replace(scheme: 'https').toString();
+    if (isInoserHost(uri.host)) {
+      return uri.replace(scheme: 'http').toString();
     }
+    return url;
+  }
+
+  /// Keep Inoser media on a scheme iOS can load (HTTPS when present, else HTTP).
+  static String rewriteInoserUri(String url) {
     return url;
   }
 
