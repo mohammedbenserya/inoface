@@ -47,7 +47,10 @@ class AuthLogic extends GetxController {
       try {
         LoginModel model = await getConcreteLogin(login);
         if (model.erreur == false) {
-          await cacheLoginInput(login);
+          await cacheLoginInput(login.copyWith(
+            codeSchool: model.personneModel?.ecolecode ?? login.codeSchool,
+            ecolename: model.ecolename ?? login.ecolename,
+          ));
           await cachePersonnes(model);
           await cacheRoles(model);
           logger.i('entity: ${model.erreur}');
@@ -73,16 +76,21 @@ class AuthLogic extends GetxController {
           }
         }
 
-        if (model.ecolename != model.ecolename) {
-          await prefs.setString(Keys.ECOLE_NAME, '${model.ecolename}');
+        final schoolCode = model.personneModel?.ecolecode ?? login.codeSchool;
+        final schoolName = model.ecolename ?? login.ecolename;
+        if (schoolCode != null && schoolCode.isNotEmpty) {
+          await prefs.setString(Keys.CODE_SCHOOL, schoolCode);
+        }
+        if (schoolName != null && schoolName.isNotEmpty) {
+          await prefs.setString(Keys.ECOLE_NAME, schoolName);
         }
 
         final account = AccountModel(
           identifiant: model.personneModel?.identifiant ?? login.identifiant,
-          codeSchool: model.personneModel?.ecolecode,
+          codeSchool: schoolCode,
           tokenmobile: model.personneModel?.token,
           motdepasse: model.motdepasse ?? login.motdepasse,
-          nameSchool: login.ecolename,
+          nameSchool: schoolName,
         );
         await boxAccount.put('${account.identifiant}${account.codeSchool}', account);
 
@@ -187,9 +195,9 @@ class AuthLogic extends GetxController {
           account = AccountModel(
             identifiant: model.personneModel?.identifiant ?? login.identifiant,
             motdepasse: model.motdepasse ?? login.motdepasse,
-            codeSchool: model.personneModel?.ecolecode,
+            codeSchool: model.personneModel?.ecolecode ?? login.codeSchool,
             tokenmobile: model.personneModel?.token,
-            nameSchool: login.ecolename,
+            nameSchool: model.ecolename ?? login.ecolename,
           );
 
           final key = '${account.identifiant}${account.codeSchool}';
@@ -295,13 +303,22 @@ class AuthLogic extends GetxController {
   }
 
   Future<LoginModel> getConcreteLogin(InputLogin login) async {
+    if (login.codeSchool != null && login.codeSchool!.trim().isNotEmpty) {
+      await prefs.setString(Keys.CODE_SCHOOL, login.codeSchool!.trim());
+    }
+
+    final url = UrlService.schoolJson(
+      login.codeSchool ?? prefs.getString(Keys.CODE_SCHOOL),
+      UrlService.loginInface,
+    );
+
     if (kDebugMode) {
-      logger.i("getConcreteLogin: ${utilsLogic.getUrl(UrlService.loginInface)}");
+      logger.i("getConcreteLogin: $url");
       logger.i("getConcreteLogin: ${login.toJson()}");
     }
 
     final response = await utilsLogic.retryPost(
-        url: utilsLogic.getUrl(UrlService.loginInface),
+        url: url,
         body: {'inoface_ws': login.toString()}
     );
 

@@ -217,6 +217,8 @@ class _InitialLoginState extends State<InitialLogin> with SingleTickerProviderSt
                               motdepasse: utilsLogic.generateMd5(
                                 widget.passwordController.text.trim(),
                               ),
+                              codeSchool: widget.codeController.text.trim(),
+                              ecolename: prefs.getString(Keys.ECOLE_NAME),
                             )),
                           );
                         }

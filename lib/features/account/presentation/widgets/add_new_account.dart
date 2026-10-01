@@ -5,6 +5,7 @@ import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:inoface/core/usecases/constants.dart';
 import 'package:inoface/core/usecases/enums.dart';
 import 'package:inoface/core/util/boxes.dart';
+import 'package:inoface/core/util/keys.dart';
 import '../../../login/models/input_qrcode.dart';
 import '../../../login/models/input_login.dart';
 import '../../../../core/util/app_image.dart';
@@ -191,10 +192,15 @@ class _AddNewAccountState extends State<AddNewAccount>
                         onPressed: () async {
                           if (networkState.isConnected) {
                             if (_formKey.currentState?.validate() ?? false) {
+                              await prefs.setString(
+                                Keys.CODE_SCHOOL,
+                                _codeController.text.trim(),
+                              );
                               final login = InputLogin(
                                 tokenmobile: await notifyFirebaseLogic.getToken(),
                                 identifiant: _identifiantController.text.trim(),
                                 codeSchool: _codeController.text.trim(),
+                                ecolename: prefs.getString(Keys.ECOLE_NAME),
                                 motdepasse: utilsLogic.generateMd5(
                                   _passwordController.text.trim(),
                                 ),

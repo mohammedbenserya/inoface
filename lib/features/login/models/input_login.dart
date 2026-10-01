@@ -29,13 +29,14 @@ class InputLogin extends Equatable {
   );
 
   String toString() {
-    var body = {
+    final body = <String, dynamic>{
       'identifiant': identifiant.replaceAll(' ', ''),
       'motdepasse': motdepasse.replaceAll(' ', ''),
       'tokenmobile': tokenmobile?.replaceAll(' ', ''),
       'codeSchool': codeSchool?.replaceAll(' ', ''),
       'ecolename': ecolename?.replaceAll(' ', ''),
     };
+    body.removeWhere((key, value) => value == null || '$value'.isEmpty);
     return json.encode(body);
   }
 
