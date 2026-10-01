@@ -83,10 +83,14 @@ class UtilsLogic extends GetxController {
   }
 
   void showSnack({required SnackBarType type, String? title, String? message, int seconds = 4}) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    var attempts = 0;
+    void tryShow() {
       final overlayContext = Get.overlayContext ?? Get.context;
       if (overlayContext == null || Overlay.maybeOf(overlayContext) == null) {
-        logger.w('Snackbar skipped: overlay is not ready');
+        if (attempts < 10) {
+          attempts++;
+          Future.delayed(const Duration(milliseconds: 250), tryShow);
+        }
         return;
       }
       late final String snackTitle;
@@ -143,7 +147,9 @@ class UtilsLogic extends GetxController {
       } catch (e, st) {
         logger.e('Snackbar failed: $e', stackTrace: st);
       }
-    });
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => tryShow());
   }
 
   bool isLocalFilePath(String path) {

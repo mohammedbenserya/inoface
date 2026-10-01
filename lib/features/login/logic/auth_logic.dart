@@ -47,15 +47,16 @@ class AuthLogic extends GetxController {
       try {
         LoginModel model = await getConcreteLogin(login);
         if (model.erreur == false) {
-          await cacheLoginInput(login.copyWith(
+          final sessionLogin = login.copyWith(
             codeSchool: model.personneModel?.ecolecode ?? login.codeSchool,
             ecolename: model.ecolename ?? login.ecolename,
-          ));
+          );
+          await cacheLoginInput(sessionLogin);
           await cachePersonnes(model);
           await cacheRoles(model);
           logger.i('entity: ${model.erreur}');
           if (utilsLogic.checkRole(model)) {
-            EnfantsModel enfants = await getConcreteEnfants(login);
+            EnfantsModel enfants = await getConcreteEnfants(sessionLogin);
             if (utilsLogic.checkEnfants(enfants)) {
               await prefs.setBool(
                 Keys.RECUPERATION_ENFANT_OPTION,

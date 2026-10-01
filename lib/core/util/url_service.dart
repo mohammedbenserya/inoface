@@ -2,7 +2,7 @@
 
 class UrlService {
   static const String inoserHost = 'inoser-education.com';
-  static const String inoserOrigin = 'https://$inoserHost';
+  static const String inoserOrigin = 'http://$inoserHost';
 
   static const loginInface = "login_ws";
   static const enfants = "enfants_ws";
