@@ -339,7 +339,7 @@ class AuthLogic extends GetxController {
 
   Future<LoginModel> getConcreteNewAccount(InputLogin login) async {
     try {
-      final url = 'http://inoser-education.com/${login.codeSchool}/json/${UrlService.loginInface}';
+      final url = UrlService.schoolJson(login.codeSchool, UrlService.loginInface);
       final response = await utilsLogic.retryPost(
         url: url, body: {'inoface_ws': login.toString()}
       );
@@ -365,7 +365,7 @@ class AuthLogic extends GetxController {
 
   Future<LoginModel> getConcreteQrCode(InputQrcode login) async {
     try {
-      const url = 'http://inoser-education.com/lescopains/json/GetUrlFromQrcode_ws';
+      const url = UrlService.GET_URL_QRCODE;
       final responseUrl = await http.post(Uri.parse(url), body: {
         'inoface_ws': login.toString(),
       });
@@ -492,14 +492,14 @@ class AuthLogic extends GetxController {
 
   Future<LoginModel> getConcreteQrCodeMultiAcc(InputQrcode login) async {
     try {
-      const url = 'http://inoser-education.com/lescopains/json/GetUrlFromQrcode_ws';
+      const url = UrlService.GET_URL_QRCODE;
       final responseUrl = await http.post(Uri.parse(url), body: {
         'inoface_ws': login.toString(),
       });
 
       GetUrlFromQrcodeModel qrcodeModel = getUrlFromQrcodeModelFromJson(responseUrl.body);
       log('qrcodeModel====>: ${qrcodeModel.toJson()}');
-      final urlQRCode = 'http://inoser-education.com/${qrcodeModel.ecolecode}/json/${UrlService.QRCODE}';
+      final urlQRCode = UrlService.schoolJson(qrcodeModel.ecolecode ?? '', UrlService.QRCODE);
       final response = await http.post(Uri.parse(urlQRCode), body: {
         'inoface_ws': login.toString(),
       });

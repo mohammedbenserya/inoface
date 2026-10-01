@@ -16,6 +16,7 @@ import '../../../widgets/web_vew_app.dart';
 import 'package:flutter/material.dart';
 import '../../../../main.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -187,7 +188,7 @@ class _DetailsInformationsState extends State<DetailsInformations> {
                                     width: MediaQuery.of(context).size.width,
                                     child: CachedNetworkImage(
                                       cacheManager: DefaultCacheManager(),
-                                      imageUrl: '${i.lien_piece_jointe}',
+                                      imageUrl: UrlService.rewriteInoserUri('${i.lien_piece_jointe}'),
                                       fit: BoxFit.contain,
                                       placeholder: (context, url) => const Center(
                                         child: CircularProgressIndicator(),
@@ -227,7 +228,7 @@ class _DetailsInformationsState extends State<DetailsInformations> {
                                     opaque: false, pageBuilder: (BuildContext context, _, __) => DialogImageInfo(pieces: pieces))),
                                 child: CachedNetworkImage(
                                   cacheManager: DefaultCacheManager(),
-                                  imageUrl: '${pieces.first.lien_piece_jointe}',
+                                  imageUrl: UrlService.rewriteInoserUri('${pieces.first.lien_piece_jointe}'),
                                   fit: BoxFit.contain,
                                   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                   errorWidget: (context, url, error) => Center(

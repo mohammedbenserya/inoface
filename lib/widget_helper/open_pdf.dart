@@ -1,6 +1,7 @@
 import 'package:inoface/core/util/generateMaterialColor.dart';
 import 'package:inoface/widget_helper/responsive_safe_area.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:inoface/core/util/url_service.dart';
 import 'package:inoface/core/usecases/enums.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/usecases/constants.dart';
@@ -63,7 +64,7 @@ class OpenPDF extends StatelessWidget {
         );
       },
     ).cachedFromUrl(
-      path,
+      UrlService.rewriteInoserUri(path),
       placeholder: (progress) => Center(child: Text('$progress %')),
       errorWidget: (error) => Center(child: Text(error.toString())),
     );

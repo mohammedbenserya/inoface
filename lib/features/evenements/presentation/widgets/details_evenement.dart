@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as bas;
 import '../../../../main.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -200,7 +201,7 @@ class _DetailsEvenementState extends State<DetailsEvenement> {
                                     width: MediaQuery.of(context).size.width,
                                     child: CachedNetworkImage(
                                       cacheManager: DefaultCacheManager(),
-                                      imageUrl: '${i.lien_piece_jointe}',
+                                      imageUrl: UrlService.rewriteInoserUri('${i.lien_piece_jointe}'),
                                       fit: BoxFit.contain,
                                       placeholder: (context, url) =>
                                       const Center(child: CircularProgressIndicator()),
@@ -241,7 +242,7 @@ class _DetailsEvenementState extends State<DetailsEvenement> {
                                         CustomDialogImage(photos: photos))),
                                 child: CachedNetworkImage(
                                   cacheManager: DefaultCacheManager(),
-                                  imageUrl: '${photos.first.lien_piece_jointe}',
+                                  imageUrl: UrlService.rewriteInoserUri('${photos.first.lien_piece_jointe}'),
                                   fit: BoxFit.contain,
                                   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                   errorWidget: (context, url, error) => Center(

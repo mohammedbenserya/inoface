@@ -8,6 +8,7 @@ import '../core/util/app_image.dart';
 import '../core/util/generateMaterialColor.dart';
 import 'responsive_safe_area.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 List<String> imgList = [];
@@ -156,7 +157,7 @@ class _CustomDialogImageState extends State<CustomDialogImage> {
                             Expanded(
                               child: CachedNetworkImage(
                                 cacheManager: DefaultCacheManager(),
-                                imageUrl: '${i.lieu_photo}',
+                                imageUrl: UrlService.rewriteInoserUri('${i.lieu_photo}'),
                                 fit: BoxFit.contain,
                                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50),

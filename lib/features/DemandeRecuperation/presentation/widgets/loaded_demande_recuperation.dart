@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 import '../../../../main.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -98,7 +99,7 @@ class LoadedDemandeRecuperation extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         child: ClipOval(
                           child: CachedNetworkImage(
-                            imageUrl: element.photo ?? '',
+                            imageUrl: UrlService.rewriteInoserUri(element.photo ?? ''),
                             fit: BoxFit.contain,
                             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                             errorWidget: (context, url, error) => SizedBox(

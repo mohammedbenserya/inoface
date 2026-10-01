@@ -219,7 +219,7 @@ class RecuperationLogic extends GetxController {
                           borderRadius: BorderRadius.circular(100),
                           child: CachedNetworkImage(
                             height: 45,
-                            imageUrl: '${element.photo}',
+                            imageUrl: UrlService.rewriteInoserUri('${element.photo}'),
                             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                             errorWidget: (context, url, error) => Center(
                               child: Image.asset(AppImage.defaultPhoto),

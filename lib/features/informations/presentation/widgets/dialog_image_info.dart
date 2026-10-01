@@ -8,6 +8,7 @@ import '../../../../core/util/generateMaterialColor.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../../../core/util/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -70,7 +71,7 @@ class DialogImageInfo extends StatelessWidget {
                             Expanded(
                               child: CachedNetworkImage(
                                 cacheManager: DefaultCacheManager(),
-                                imageUrl: '${i.lien_piece_jointe}',
+                                imageUrl: UrlService.rewriteInoserUri('${i.lien_piece_jointe}'),
                                 fit: BoxFit.contain,
                                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) => Center(

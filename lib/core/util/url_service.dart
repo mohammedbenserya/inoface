@@ -1,8 +1,8 @@
 
 
 class UrlService {
-  //! TEST
-  static const baseUrl = "http://inoser2.cnrst.ma/Inoface/json/";
+  static const String inoserHost = 'inoser-education.com';
+  static const String inoserOrigin = 'https://$inoserHost';
 
   static const loginInface = "login_ws";
   static const enfants = "enfants_ws";
@@ -17,7 +17,7 @@ class UrlService {
   static const INFORMATIONS_BY_ID = "InformationByID_ws";
   static const FORGIT_PASSWORD = "Forget_password_ws";
   static const QRCODE = "login_with_Qrcode_ws";
-  static const GET_URL_QRCODE = "http://inoser2.cnrst.ma/Inoface/json/GetUrlFromQrcode_ws";
+  static const GET_URL_QRCODE = "$inoserOrigin/lescopains/json/GetUrlFromQrcode_ws";
   static const AGEND_CONFIG = "agenda_config_ws";
   static const AGEND = "agenda_ws";
   static const AGENDA_DATES = "agenda_dates_ws";
@@ -47,4 +47,31 @@ class UrlService {
   static const sondageByID_ws = 'sondageByID_ws';
 
   static const logout = 'logout_ws';
+
+  static String schoolJson(String codeSchool, String service) {
+    return '$inoserOrigin/$codeSchool/json/$service';
+  }
+
+  /// Upgrade Inoser media/API URLs returned as http:// by the backend.
+  static String rewriteInoserUri(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null || uri.host.isEmpty) {
+      return url;
+    }
+    final host = uri.host.toLowerCase();
+    final isInoser = host == inoserHost ||
+        host.endsWith('.$inoserHost') ||
+        host == 'inoser2.cnrst.ma';
+    if (isInoser && uri.scheme == 'http') {
+      return uri.replace(scheme: 'https').toString();
+    }
+    return url;
+  }
+
+  static String? rewriteInoserUriOrNull(String? url) {
+    if (url == null || url.isEmpty) {
+      return url;
+    }
+    return rewriteInoserUri(url);
+  }
 }

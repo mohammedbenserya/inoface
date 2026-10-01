@@ -8,6 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/material.dart';
 import '../../../../main.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -65,7 +66,7 @@ class RedirectEvenement extends StatelessWidget {
                                           child: SizedBox(
                                             width: MediaQuery.of(context).size.width,
                                             child: CachedNetworkImage(
-                                              imageUrl: '${i.lien_piece_jointe}',
+                                              imageUrl: UrlService.rewriteInoserUri('${i.lien_piece_jointe}'),
                                               fit: BoxFit.contain,
                                               placeholder: (context, url) =>
                                                   const Center(child: CircularProgressIndicator()),

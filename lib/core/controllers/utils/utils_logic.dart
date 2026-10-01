@@ -49,6 +49,7 @@ import 'dart:developer';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -199,7 +200,7 @@ class UtilsLogic extends GetxController {
 
   String getUrl(String service) {
     final codeSchool = prefs.getString(Keys.CODE_SCHOOL) ?? '';
-    return 'http://inoser-education.com/$codeSchool/json/$service'; //! New Link
+    return UrlService.schoolJson(codeSchool, service);
   }
 
   Future<String> prepareSaveDir() async {
@@ -225,6 +226,7 @@ class UtilsLogic extends GetxController {
 
   Future<void> download(String url) async {
     try {
+      url = UrlService.rewriteInoserUri(url);
       String fileName = Uri.decodeFull(p.basename(url)).replaceAll(RegExp(r'(\?alt).*'), '');
       String formatName = fileName.split('/').last;
       final savePath = await _findLocalPath();
@@ -578,6 +580,7 @@ class UtilsLogic extends GetxController {
 
   Future<bool> requestDownload({required BuildContext context, required String url}) async {
     try {
+      url = UrlService.rewriteInoserUri(url);
       if (networkState.isConnected) {
         if (url.toLowerCase().contains('.pdf')) {
           final String name = p.basename(url);
@@ -1633,7 +1636,7 @@ class UtilsLogic extends GetxController {
               ClipOval(
                 child: CachedNetworkImage(
                   height: 45, width: 45,
-                  imageUrl: '${utilsState.enfant?.photo}',
+                  imageUrl: UrlService.rewriteInoserUri('${utilsState.enfant?.photo}'),
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -1683,7 +1686,7 @@ class UtilsLogic extends GetxController {
                           ClipOval(
                             child: CachedNetworkImage(
                               height: 45, width: 45,
-                              imageUrl: '${element.photo}',
+                              imageUrl: UrlService.rewriteInoserUri('${element.photo}'),
                               placeholder: (context, url) =>
                               const Center(child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) => Center(

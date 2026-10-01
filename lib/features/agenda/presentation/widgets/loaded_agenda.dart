@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import '../../../../main.dart';
 import 'package:get/get.dart';
 import 'agenda_notes.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -153,7 +154,7 @@ class _LoadedAgendaState extends State<LoadedAgenda> {
                                                                               cacheManager: DefaultCacheManager(),
                                                                               // height: 85, width: 85,
                                                                               fit: BoxFit.fitHeight,
-                                                                              imageUrl: '${snapType.data?.lien_image}',
+                                                                              imageUrl: UrlService.rewriteInoserUri('${snapType.data?.lien_image}'),
                                                                               placeholder: (context, url) =>
                                                                               const Center(
                                                                                   child: CircularProgressIndicator()),
@@ -194,7 +195,7 @@ class _LoadedAgendaState extends State<LoadedAgenda> {
                                                             cacheManager: DefaultCacheManager(),
                                                             height: 60, width: 60,
                                                             fit: BoxFit.fill,
-                                                            imageUrl: '${snapTypDetails.data?.lien_image}',
+                                                            imageUrl: UrlService.rewriteInoserUri('${snapTypDetails.data?.lien_image}'),
                                                             placeholder: (context, url) =>
                                                             const Center(child: CircularProgressIndicator()),
                                                             errorWidget: (context, url, error) =>

@@ -631,7 +631,7 @@ class SurveyLogic extends GetxController {
             child: CachedNetworkImage(
               width: Get.width,
               fit: BoxFit.fill,
-              imageUrl: sondage.piecesjointes.first.lienPieceJointe,
+              imageUrl: UrlService.rewriteInoserUri(sondage.piecesjointes.first.lienPieceJointe),
               placeholder: (context, url) => const Center(
                 child: CircularProgressIndicator(),
               ),

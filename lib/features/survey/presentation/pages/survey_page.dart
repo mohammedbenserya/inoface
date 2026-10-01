@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../../logic/survey_logic.dart';
 import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -95,7 +96,7 @@ class SurveyPage extends StatelessWidget {
                                                     return CachedNetworkImage(
                                                       width: Get.width,
                                                       fit: BoxFit.fill,
-                                                      imageUrl: i.lienPieceJointe,
+                                                      imageUrl: UrlService.rewriteInoserUri(i.lienPieceJointe),
                                                       placeholder: (context, url) => const Center(
                                                         child: CircularProgressIndicator(),
                                                       ),

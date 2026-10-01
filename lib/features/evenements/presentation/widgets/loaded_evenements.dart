@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../main.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -153,7 +154,7 @@ class LoadedEvenements extends StatelessWidget {
                                                                 child: CachedNetworkImage(
                                                                   fit: BoxFit.cover,
                                                                   cacheManager: DefaultCacheManager(),
-                                                                  imageUrl: '${i.lien_piece_jointe}',
+                                                                  imageUrl: UrlService.rewriteInoserUri('${i.lien_piece_jointe}'),
                                                                   placeholder: (context, url) => const Center(
                                                                     child: CircularProgressIndicator(),
                                                                   ),
@@ -183,7 +184,7 @@ class LoadedEvenements extends StatelessWidget {
                                                           height: 180,
                                                           child: CachedNetworkImage(
                                                             cacheManager: DefaultCacheManager(),
-                                                            imageUrl: '${photos.first.lien_piece_jointe}',
+                                                            imageUrl: UrlService.rewriteInoserUri('${photos.first.lien_piece_jointe}'),
                                                             placeholder: (context, url) => const Center(
                                                               child: CircularProgressIndicator(),
                                                             ),

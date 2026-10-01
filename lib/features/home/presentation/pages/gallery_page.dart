@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../main.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -88,7 +89,7 @@ class GalleryPage extends StatelessWidget {
                               child: CachedNetworkImage(
                                 cacheManager: DefaultCacheManager(),
                                 fit: BoxFit.fill,
-                                imageUrl: '${agendas[index].lieu_photo}',
+                                imageUrl: UrlService.rewriteInoserUri('${agendas[index].lieu_photo}'),
                                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) => const Center(
                                     child: Icon(Icons.info_outline,

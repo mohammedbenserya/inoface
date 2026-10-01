@@ -1,6 +1,7 @@
 import 'package:inoface/widget_helper/responsive_safe_area.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../core/util/generateMaterialColor.dart';
+import '../../core/util/url_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -134,7 +135,7 @@ class _WebVewAppState extends State<WebVewApp> {
         body: Stack(
           children: [
             InAppWebView(
-              initialUrlRequest: widget.isHtml ? null : URLRequest(url: WebUri(widget.url)),
+              initialUrlRequest: widget.isHtml ? null : URLRequest(url: WebUri(UrlService.rewriteInoserUri(widget.url))),
               initialData: widget.isHtml ? InAppWebViewInitialData(data: widget.url) : null,
               initialSettings: InAppWebViewSettings(),
               onWebViewCreated: (InAppWebViewController controller) {

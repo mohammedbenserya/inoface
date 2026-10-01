@@ -5,6 +5,7 @@ import '../../../../widget_helper/custom_dialog_image.dart';
 import '../../models/agenda_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inoface/core/util/url_service.dart';
 
 
 List<String> imgList = [];
@@ -42,7 +43,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
         isLoop: true,
         children: imgList.map((item) {
           return CachedNetworkImage(
-            imageUrl: item,
+            imageUrl: UrlService.rewriteInoserUri(item),
             height: 200,
             fit: BoxFit.contain,
             progressIndicatorBuilder: (context, url, downloadProgress) => Center(

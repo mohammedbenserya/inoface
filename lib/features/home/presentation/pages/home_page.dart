@@ -37,6 +37,7 @@ import 'package:badges/badges.dart' as badge;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
+import 'package:inoface/core/util/url_service.dart';
 
 
 
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> with
                                                     height: 60,
                                                     child: CachedNetworkImage(
                                                       cacheManager: DefaultCacheManager(),
-                                                      imageUrl: '${enfant?.photo}',
+                                                      imageUrl: UrlService.rewriteInoserUri('${enfant?.photo}'),
                                                       progressIndicatorBuilder: (context, url, downloadProgress) =>
                                                           CircularProgressIndicator(value: downloadProgress.progress),
                                                       // placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
