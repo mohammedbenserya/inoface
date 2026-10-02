@@ -36,15 +36,17 @@ class ReservationsPage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('cantine'.tr),
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+            iconTheme: const IconThemeData(color: Colors.white),
+            title: Text(
+              'cantine'.tr,
+              style: const TextStyle(color: Colors.white),
+            ),
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'menu'.tr,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                child: Text('menu'.tr),
                 onPressed: () => Get.to(() => PdfReservation(
                   idPersonne: enfant.id_personne,
                 )),
