@@ -40,5 +40,15 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# iOS / Xcode generated (machine-generated, causes merge churn if tracked)
+ios/build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+**/xcuserdata/
+**/DerivedData/
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
